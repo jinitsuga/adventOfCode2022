@@ -12,6 +12,7 @@ import { input } from "./day2input.js";
 
 // ROUND SCORES: loss: 0, draw: 3, win: 6
 
+// SOLUTION atm is for part 2 only, since I just replaced values.
 const rounds = input.split("\n");
 rounds.pop();
 rounds.pop();
