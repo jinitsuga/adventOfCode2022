@@ -1,5 +1,4 @@
-export const input = `
-fzmmmfwDWFzlQQqjCQjDGnqq
+export const input = `fzmmmfwDWFzlQQqjCQjDGnqq
 tJHJvLJVVttNsvTtTvgHHSVwCsQRQQZCZZMqQMQBnqBMQs
 LgThNJhNSgTJVgvgtghPhbpfWzfbwfPmpprb
 lDLnSnLZRjmWrlhrFF
@@ -298,5 +297,4 @@ HqSJchHTHbTgHhGhvmRzFmnFtzRF
 RJqHTpgDLJDSqLJJPNVjsfPwBVsVLlfN
 NDrBlSmrFBlbbJllmtHHwhNNhZztqHVRzQ
 CMTCGLcvvtfCdCcCvCnMTMcTzjHwVZVRLjRRjQjRHRwzwjVH
-dfGdgGMGPggnvfvgbtDtlSJPDSFJPslJ
-`;
+dfGdgGMGPggnvfvgbtDtlSJPDSFJPslJ`;
