@@ -71,10 +71,22 @@ const groupsList = [];
 
 const groupSize = 3;
 
-for (let i = 0; i < part2Example.length; i += groupSize) {
-  const group = part2Example.slice(i, i + groupSize);
+let part2Sums = 0;
+
+for (let i = 0; i < inputArr.length; i += groupSize) {
+  const group = inputArr.slice(i, i + groupSize);
   console.log(group);
   groupsList.push(group);
 }
 
-console.log(groupsList);
+groupsList.map((group) => {
+  for (let i = 0; i < group[0].length; i++) {
+    const letter = group[0][i];
+    if (group[1].includes(letter) && group[2].includes(letter)) {
+      const value = valuesList.indexOf(letter) + 1;
+      part2Sums += value;
+      break;
+    }
+  }
+});
+console.log(part2Sums);
