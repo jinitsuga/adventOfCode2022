@@ -43,9 +43,6 @@ const solutions = inputArr.map((string) => {
   }
 });
 
-console.log(duplicatesList);
-console.log(valuesSum);
-
 // PART 2 ---------
 
 // Examples
@@ -75,7 +72,6 @@ let part2Sums = 0;
 
 for (let i = 0; i < inputArr.length; i += groupSize) {
   const group = inputArr.slice(i, i + groupSize);
-  console.log(group);
   groupsList.push(group);
 }
 
