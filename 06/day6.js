@@ -1,5 +1,8 @@
 import { input } from "./day6Input.js";
 
+// EDITED FOR PART 2 SOLUTION
+// just change makeMarkers fn i + X values from 14 to 4  and 13 to 3 for part 1 solush ---->
+
 const exampleData = input;
 console.log(exampleData.length);
 
@@ -8,8 +11,8 @@ let solutions = [];
 
 function makeMarkers(signal) {
   for (let i = 0; i < signal.length; i++) {
-    if (signal[i + 3] != undefined) {
-      const marker = signal.substring(i, i + 4);
+    if (signal[i + 13] != undefined) {
+      const marker = signal.substring(i, i + 14);
       markers.push(marker);
     }
   }
@@ -35,4 +38,4 @@ markers.map((marker) => {
 });
 console.log(solutions[0]);
 
-console.log(exampleData.indexOf(solutions[0]) + 4);
+console.log(exampleData.indexOf(solutions[0]) + 14);
