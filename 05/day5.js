@@ -56,7 +56,8 @@ crates.map((pile) => {
 });
 console.log(newStacks.map((pile) => pile.reverse()));
 
-// Part 1 solush -----
+// Part 1  -----
+
 // const lastStacks = numberInstructions.map((instrus) => {
 //   const number = instrus[0];
 //   const from = instrus[1] - 1;
