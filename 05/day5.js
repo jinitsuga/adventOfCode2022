@@ -1,511 +1,10 @@
+import { realInstructions } from "./day5Input.js";
 // Crates moved 1 at a time
 // Example data:
 //     [D]
 // [N] [C]
 // [Z] [M] [P]
 //  1   2   3
-
-const realInstructions = `move 1 from 5 to 6
-move 5 from 6 to 7
-move 10 from 7 to 3
-move 4 from 8 to 4
-move 2 from 5 to 4
-move 4 from 3 to 6
-move 6 from 2 to 4
-move 8 from 6 to 9
-move 5 from 9 to 2
-move 7 from 2 to 7
-move 2 from 1 to 4
-move 3 from 3 to 8
-move 1 from 5 to 9
-move 1 from 3 to 8
-move 1 from 1 to 2
-move 11 from 4 to 6
-move 2 from 5 to 6
-move 10 from 9 to 1
-move 4 from 8 to 3
-move 7 from 7 to 1
-move 9 from 1 to 2
-move 1 from 6 to 5
-move 1 from 5 to 9
-move 5 from 3 to 8
-move 2 from 9 to 1
-move 5 from 3 to 9
-move 3 from 6 to 8
-move 5 from 9 to 6
-move 6 from 6 to 3
-move 3 from 3 to 2
-move 1 from 9 to 8
-move 13 from 2 to 3
-move 3 from 8 to 1
-move 11 from 1 to 4
-move 3 from 4 to 1
-move 2 from 6 to 5
-move 4 from 6 to 8
-move 17 from 3 to 9
-move 1 from 1 to 8
-move 1 from 6 to 5
-move 1 from 3 to 7
-move 1 from 7 to 4
-move 3 from 4 to 1
-move 1 from 3 to 8
-move 4 from 8 to 1
-move 3 from 5 to 9
-move 1 from 6 to 4
-move 4 from 4 to 8
-move 2 from 8 to 4
-move 2 from 1 to 6
-move 4 from 8 to 6
-move 1 from 8 to 3
-move 6 from 6 to 3
-move 6 from 3 to 9
-move 6 from 1 to 4
-move 5 from 8 to 4
-move 1 from 3 to 6
-move 3 from 1 to 7
-move 1 from 6 to 7
-move 4 from 4 to 5
-move 24 from 9 to 5
-move 2 from 9 to 1
-move 27 from 5 to 7
-move 13 from 7 to 2
-move 1 from 5 to 9
-move 7 from 2 to 7
-move 1 from 9 to 8
-move 5 from 2 to 8
-move 1 from 2 to 5
-move 1 from 5 to 7
-move 21 from 4 to 1
-move 1 from 4 to 6
-move 1 from 6 to 5
-move 22 from 7 to 5
-move 2 from 7 to 8
-move 7 from 5 to 4
-move 1 from 4 to 5
-move 2 from 7 to 9
-move 5 from 5 to 2
-move 5 from 4 to 2
-move 3 from 5 to 1
-move 7 from 8 to 7
-move 1 from 4 to 1
-move 23 from 1 to 8
-move 2 from 9 to 4
-move 11 from 8 to 3
-move 3 from 1 to 3
-move 1 from 4 to 2
-move 12 from 3 to 2
-move 7 from 7 to 3
-move 3 from 2 to 1
-move 1 from 4 to 9
-move 1 from 1 to 3
-move 9 from 8 to 6
-move 2 from 5 to 4
-move 3 from 1 to 7
-move 3 from 2 to 4
-move 7 from 2 to 3
-move 9 from 3 to 4
-move 7 from 5 to 2
-move 2 from 7 to 2
-move 1 from 7 to 2
-move 13 from 4 to 6
-move 1 from 9 to 8
-move 2 from 8 to 2
-move 12 from 2 to 1
-move 3 from 3 to 1
-move 1 from 8 to 1
-move 5 from 3 to 7
-move 3 from 2 to 8
-move 7 from 2 to 5
-move 3 from 8 to 3
-move 1 from 4 to 8
-move 22 from 6 to 4
-move 1 from 3 to 6
-move 3 from 5 to 8
-move 4 from 5 to 8
-move 1 from 3 to 9
-move 8 from 4 to 2
-move 8 from 8 to 3
-move 1 from 6 to 3
-move 4 from 2 to 6
-move 1 from 9 to 4
-move 5 from 3 to 9
-move 2 from 8 to 1
-move 3 from 2 to 1
-move 10 from 4 to 8
-move 4 from 7 to 6
-move 10 from 1 to 3
-move 9 from 8 to 2
-move 1 from 7 to 1
-move 15 from 3 to 1
-move 1 from 8 to 9
-move 4 from 4 to 1
-move 17 from 1 to 3
-move 3 from 2 to 3
-move 3 from 6 to 8
-move 5 from 9 to 7
-move 11 from 1 to 8
-move 4 from 7 to 8
-move 6 from 2 to 5
-move 2 from 1 to 4
-move 4 from 6 to 8
-move 16 from 8 to 6
-move 2 from 6 to 1
-move 1 from 9 to 5
-move 1 from 7 to 5
-move 2 from 5 to 6
-move 5 from 6 to 3
-move 2 from 8 to 5
-move 1 from 2 to 1
-move 10 from 6 to 3
-move 6 from 5 to 9
-move 2 from 1 to 2
-move 2 from 4 to 2
-move 1 from 2 to 4
-move 5 from 9 to 2
-move 1 from 4 to 3
-move 1 from 9 to 7
-move 1 from 6 to 1
-move 1 from 1 to 7
-move 2 from 7 to 5
-move 7 from 2 to 5
-move 6 from 5 to 1
-move 1 from 2 to 3
-move 1 from 4 to 1
-move 2 from 8 to 9
-move 8 from 1 to 3
-move 2 from 5 to 3
-move 29 from 3 to 9
-move 5 from 3 to 8
-move 6 from 8 to 5
-move 1 from 6 to 5
-move 6 from 3 to 2
-move 2 from 2 to 4
-move 1 from 1 to 7
-move 18 from 9 to 6
-move 2 from 2 to 9
-move 2 from 2 to 8
-move 13 from 6 to 8
-move 1 from 7 to 4
-move 3 from 5 to 6
-move 1 from 5 to 7
-move 1 from 7 to 4
-move 14 from 9 to 3
-move 3 from 4 to 5
-move 1 from 9 to 7
-move 14 from 3 to 2
-move 1 from 7 to 3
-move 4 from 2 to 5
-move 16 from 8 to 6
-move 11 from 6 to 9
-move 13 from 6 to 4
-move 5 from 5 to 2
-move 12 from 2 to 4
-move 19 from 4 to 3
-move 7 from 4 to 5
-move 14 from 5 to 2
-move 2 from 3 to 6
-move 3 from 9 to 5
-move 2 from 6 to 2
-move 1 from 5 to 2
-move 3 from 5 to 4
-move 3 from 4 to 1
-move 7 from 9 to 6
-move 4 from 6 to 1
-move 1 from 1 to 8
-move 3 from 6 to 9
-move 1 from 8 to 7
-move 1 from 9 to 6
-move 4 from 1 to 2
-move 1 from 7 to 2
-move 2 from 9 to 8
-move 10 from 2 to 9
-move 2 from 2 to 9
-move 11 from 3 to 7
-move 1 from 8 to 9
-move 2 from 3 to 7
-move 1 from 1 to 7
-move 10 from 2 to 4
-move 3 from 4 to 1
-move 4 from 1 to 8
-move 1 from 6 to 5
-move 6 from 7 to 9
-move 3 from 9 to 1
-move 1 from 5 to 1
-move 4 from 4 to 2
-move 5 from 2 to 1
-move 1 from 2 to 7
-move 2 from 7 to 6
-move 1 from 2 to 1
-move 2 from 9 to 1
-move 3 from 4 to 7
-move 1 from 3 to 7
-move 2 from 8 to 3
-move 2 from 6 to 5
-move 2 from 5 to 8
-move 10 from 7 to 2
-move 6 from 9 to 1
-move 1 from 7 to 3
-move 2 from 8 to 9
-move 7 from 3 to 7
-move 7 from 3 to 9
-move 1 from 8 to 9
-move 6 from 2 to 8
-move 13 from 9 to 1
-move 6 from 9 to 8
-move 2 from 2 to 7
-move 3 from 7 to 1
-move 1 from 8 to 1
-move 1 from 1 to 6
-move 16 from 1 to 4
-move 2 from 7 to 5
-move 12 from 4 to 9
-move 4 from 8 to 6
-move 2 from 5 to 1
-move 8 from 8 to 4
-move 2 from 4 to 5
-move 1 from 8 to 6
-move 4 from 6 to 8
-move 19 from 1 to 9
-move 3 from 8 to 5
-move 1 from 6 to 9
-move 2 from 2 to 1
-move 10 from 4 to 9
-move 1 from 1 to 2
-move 2 from 1 to 5
-move 4 from 7 to 9
-move 1 from 8 to 2
-move 1 from 2 to 6
-move 7 from 5 to 4
-move 11 from 9 to 8
-move 1 from 4 to 3
-move 10 from 8 to 1
-move 1 from 2 to 3
-move 29 from 9 to 3
-move 2 from 6 to 5
-move 1 from 5 to 3
-move 5 from 9 to 3
-move 1 from 8 to 9
-move 1 from 9 to 3
-move 6 from 4 to 6
-move 1 from 5 to 1
-move 1 from 6 to 3
-move 2 from 1 to 5
-move 1 from 9 to 5
-move 37 from 3 to 2
-move 3 from 6 to 2
-move 1 from 6 to 2
-move 1 from 6 to 4
-move 3 from 1 to 3
-move 2 from 1 to 6
-move 35 from 2 to 1
-move 1 from 6 to 8
-move 5 from 1 to 8
-move 7 from 1 to 6
-move 5 from 3 to 7
-move 1 from 8 to 7
-move 3 from 7 to 5
-move 4 from 2 to 9
-move 1 from 2 to 1
-move 1 from 4 to 3
-move 3 from 7 to 1
-move 1 from 3 to 6
-move 1 from 1 to 9
-move 5 from 9 to 2
-move 18 from 1 to 3
-move 6 from 1 to 8
-move 6 from 3 to 7
-move 4 from 8 to 6
-move 4 from 6 to 7
-move 9 from 7 to 8
-move 3 from 2 to 7
-move 4 from 6 to 1
-move 3 from 5 to 3
-move 3 from 2 to 5
-move 3 from 6 to 1
-move 4 from 7 to 4
-move 6 from 5 to 9
-move 3 from 1 to 9
-move 1 from 6 to 1
-move 15 from 8 to 2
-move 1 from 8 to 5
-move 3 from 4 to 8
-move 1 from 5 to 1
-move 1 from 6 to 5
-move 11 from 3 to 9
-move 12 from 2 to 3
-move 3 from 8 to 1
-move 15 from 1 to 2
-move 8 from 9 to 4
-move 8 from 4 to 9
-move 4 from 2 to 5
-move 1 from 4 to 6
-move 1 from 2 to 8
-move 1 from 6 to 7
-move 4 from 3 to 1
-move 1 from 8 to 5
-move 5 from 3 to 9
-move 14 from 9 to 2
-move 1 from 7 to 4
-move 4 from 1 to 3
-move 1 from 4 to 7
-move 8 from 3 to 7
-move 8 from 7 to 5
-move 1 from 7 to 9
-move 3 from 3 to 2
-move 7 from 9 to 8
-move 1 from 9 to 5
-move 2 from 8 to 5
-move 7 from 5 to 4
-move 4 from 9 to 2
-move 6 from 4 to 3
-move 18 from 2 to 5
-move 1 from 4 to 7
-move 15 from 5 to 4
-move 1 from 4 to 6
-move 2 from 2 to 7
-move 3 from 8 to 5
-move 1 from 7 to 3
-move 8 from 2 to 6
-move 4 from 2 to 3
-move 1 from 7 to 5
-move 3 from 4 to 6
-move 5 from 6 to 9
-move 8 from 5 to 6
-move 2 from 4 to 3
-move 7 from 4 to 2
-move 2 from 8 to 5
-move 7 from 5 to 6
-move 3 from 5 to 8
-move 1 from 8 to 9
-move 13 from 3 to 8
-move 2 from 2 to 7
-move 9 from 8 to 9
-move 6 from 8 to 5
-move 5 from 5 to 2
-move 2 from 7 to 8
-move 9 from 2 to 5
-move 1 from 7 to 5
-move 1 from 5 to 7
-move 21 from 6 to 2
-move 1 from 7 to 8
-move 3 from 8 to 9
-move 1 from 4 to 2
-move 23 from 2 to 7
-move 8 from 9 to 8
-move 20 from 7 to 4
-move 3 from 7 to 2
-move 1 from 2 to 7
-move 1 from 6 to 7
-move 3 from 5 to 4
-move 8 from 5 to 9
-move 2 from 7 to 1
-move 1 from 8 to 7
-move 4 from 2 to 4
-move 2 from 8 to 7
-move 2 from 8 to 2
-move 1 from 7 to 6
-move 3 from 9 to 7
-move 2 from 2 to 7
-move 5 from 7 to 1
-move 8 from 9 to 6
-move 15 from 4 to 3
-move 4 from 4 to 7
-move 6 from 1 to 4
-move 11 from 3 to 4
-move 8 from 6 to 1
-move 24 from 4 to 7
-move 6 from 1 to 8
-move 27 from 7 to 3
-move 2 from 7 to 8
-move 5 from 8 to 3
-move 4 from 8 to 4
-move 1 from 8 to 6
-move 1 from 6 to 9
-move 1 from 6 to 5
-move 2 from 4 to 2
-move 1 from 8 to 1
-move 1 from 5 to 2
-move 4 from 1 to 6
-move 1 from 7 to 5
-move 1 from 5 to 8
-move 1 from 8 to 7
-move 1 from 7 to 8
-move 1 from 8 to 1
-move 1 from 2 to 3
-move 2 from 4 to 8
-move 7 from 9 to 6
-move 2 from 8 to 1
-move 3 from 3 to 8
-move 3 from 1 to 8
-move 2 from 2 to 3
-move 1 from 4 to 1
-move 1 from 1 to 8
-move 5 from 8 to 3
-move 8 from 6 to 2
-move 1 from 9 to 4
-move 2 from 4 to 8
-move 2 from 8 to 3
-move 2 from 6 to 2
-move 33 from 3 to 2
-move 2 from 8 to 7
-move 1 from 6 to 1
-move 1 from 1 to 7
-move 2 from 3 to 8
-move 2 from 8 to 4
-move 1 from 4 to 8
-move 2 from 7 to 2
-move 2 from 3 to 7
-move 12 from 2 to 1
-move 1 from 8 to 4
-move 1 from 4 to 8
-move 1 from 4 to 3
-move 1 from 8 to 2
-move 3 from 7 to 2
-move 37 from 2 to 7
-move 1 from 1 to 7
-move 12 from 7 to 1
-move 13 from 1 to 7
-move 1 from 3 to 4
-move 35 from 7 to 6
-move 1 from 4 to 5
-move 3 from 7 to 4
-move 1 from 5 to 7
-move 2 from 3 to 4
-move 23 from 6 to 9
-move 3 from 1 to 5
-move 3 from 3 to 7
-move 1 from 3 to 6
-move 2 from 5 to 3
-move 23 from 9 to 8
-move 2 from 4 to 9
-move 16 from 8 to 2
-move 2 from 7 to 3
-move 1 from 5 to 8
-move 3 from 7 to 6
-move 1 from 9 to 8
-move 3 from 8 to 1
-move 1 from 9 to 1
-move 11 from 6 to 5
-move 2 from 4 to 1
-move 4 from 8 to 6
-move 16 from 2 to 3
-move 9 from 1 to 9
-move 1 from 8 to 4
-move 3 from 9 to 3
-move 1 from 1 to 4
-move 1 from 9 to 4
-move 7 from 5 to 2
-move 6 from 2 to 5
-move 1 from 8 to 6
-move 22 from 3 to 7
-move 8 from 5 to 8
-move 4 from 4 to 9
-move 2 from 1 to 8
-move 16 from 7 to 2
-move 1 from 3 to 5
-move 14 from 2 to 7
-move 2 from 2 to 4
-move 6 from 9 to 3`;
 
 const instructions = realInstructions.split("\n");
 console.log(instructions);
@@ -527,15 +26,6 @@ instructions.map((instru, index) => {
   numberInstructions = [...numberInstructions, instrux];
 });
 
-console.log(numberInstructions);
-//     [C]             [L]         [T]
-//     [V] [R] [M]     [T]         [B]
-//     [F] [G] [H] [Q] [Q]         [H]
-//     [W] [L] [P] [V] [M] [V]     [F]
-//     [P] [C] [W] [S] [Z] [B] [S] [P]
-// [G] [R] [M] [B] [F] [J] [S] [Z] [D]
-// [J] [L] [P] [F] [C] [H] [F] [J] [C]
-// [Z] [Q] [F] [L] [G] [W] [H] [F] [M]
 const crates = [
   [" ", "C", " ", " ", " ", "L", " ", " ", "T"],
   [" ", "V", "R", "M", " ", "T", " ", " ", "B"],
@@ -566,27 +56,48 @@ crates.map((pile) => {
 });
 console.log(newStacks.map((pile) => pile.reverse()));
 
-function moveCrates(qty, from, to) {
-  for (let i = 0; i < qty; i++) {
-    const removed = newStacks[from - 1].pop();
-    newStacks[to - 1].push(removed);
-  }
-}
+// Part 1 solush -----
+// const lastStacks = numberInstructions.map((instrus) => {
+//   const number = instrus[0];
+//   const from = instrus[1] - 1;
+//   const to = instrus[2] - 1;
+
+//   for (let i = 0; i < number; i++) {
+//     const removed = newStacks[from].pop();
+//     newStacks[to].push(removed);
+//   }
+// });
+
+// let solush = "";
+
+// newStacks.map((pile) => {
+//   solush += pile[pile.length - 1];
+// });
+
+// console.log(solush);
+
+// Part 2 ----
 
 const lastStacks = numberInstructions.map((instrus) => {
   const number = instrus[0];
   const from = instrus[1] - 1;
   const to = instrus[2] - 1;
 
-  for (let i = 0; i < number; i++) {
-    const removed = newStacks[from].pop();
-    newStacks[to].push(removed);
-  }
+  const stack = newStacks[to].concat(
+    newStacks[from].splice(newStacks[from].length - number)
+  );
+  newStacks[to] = stack;
 });
+
+// console.log(newStacks[1].splice(newStacks[1].length - 3));
+// console.log(newStacks[0].concat(newStacks[1].splice(newStacks[1].length - 3)));
+
+console.log(newStacks);
 
 let solush = "";
 
 newStacks.map((pile) => {
   solush += pile[pile.length - 1];
 });
+
 console.log(solush);
