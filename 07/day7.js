@@ -37,19 +37,23 @@ $ ls
 // Check all files and their sizes, adding to the dir size they belong to
 
 const data = exampleData.split("\n");
-console.log(data);
+
+const files = [];
+const directories = [];
 
 let tree = [];
+
+let currentDir = "";
 
 let index = 0;
 
 data.map((command) => {
   let dirName = "";
   let nestedtree = [];
-  let files = [];
 
   if (command.includes("$ cd ..")) {
     index--;
+    return;
   }
   if (command.includes("$ cd ") && !command.includes(" ..")) {
     for (let i = 5; i < command.length; i++) {
@@ -61,6 +65,25 @@ data.map((command) => {
       tree.push([dirName]);
     }
     index++;
+    currentDir = dirName;
+    return;
   }
-  console.log(tree);
+  if (command.includes("dir ")) {
+    for (let i = 4; i < command.length; i++) {
+      dirName += command[i];
+    }
+    directories.push({ name: dirName, parent: currentDir });
+    return;
+  }
+  if (command != "$ ls") {
+    const file = command.split(" ");
+    const fileSize = Number(file[0]);
+    const fileName = file[1];
+
+    const fileData = { name: fileName, size: fileSize, parent: currentDir };
+    files.push(fileData);
+  }
 });
+
+console.log(directories);
+console.log(files);
