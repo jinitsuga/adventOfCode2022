@@ -1,3 +1,4 @@
+import { input } from "./day7Input.js";
 const exampleData = `$ cd /
 $ ls
 dir a
@@ -29,12 +30,29 @@ $ ls
 // 2 collections? Files and Dirs
 // File objects have its name, its size, and the dir they belong to
 // Dir objects have name, dir they're in, references to files they contain, and sub-dirs
+// Check all files and their sizes, adding to the dir size they belong to
 
 const data = exampleData.split("\n");
 console.log(data);
 
+let dir = 0;
+
+let dirTree = [];
+
+let upperDir = "";
+
+let currentDir = dirTree[dir];
+
 data.map((command) => {
-  if (command.includes("$")) {
-    console.log("comando de terminal");
+  let dirName = "";
+  if (command.includes("$ cd ..")) {
+    dir - 1;
+  }
+  if (command.includes("$ cd ") && !command.includes(" ..")) {
+    for (let i = 5; i < command.length; i++) {
+      dirName += command[i];
+    }
+    console.log(dirName);
   }
 });
+console.log(dirTree);
