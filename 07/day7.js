@@ -1,33 +1,4 @@
-import { input } from "./day7Input.js";
-const exampleData = `$ cd /
-$ ls
-dir a
-14848514 b.txt
-8504156 c.dat
-dir d
-$ cd a
-$ ls
-dir e
-29116 f
-2557 g
-62596 h.lst
-$ cd e
-$ ls
-584 i
-$ cd ..
-$ cd ..
-$ cd d
-$ ls
-4060174 j
-8033020 d.log
-5626152 d.ext
-7214296 k`;
-
-// FIND DIRECTORIES WITH AT MOST 100.000 In size and sum them.
-// - / (dir)
-//   - a (dir)
-//     - e (dir)
-//   - d (dir)
+import { input, exampleData } from "./day7Input.js";
 
 // Analyze command
 // Keep track of folder we're in - track cd x, cd .. etc
@@ -47,9 +18,10 @@ let currentDir = "";
 
 let index = 0;
 
+// Splitting files and directories (ignoring "$ ls" command, probably a mistake)
+
 data.map((command) => {
   let dirName = "";
-  let nestedtree = [];
 
   if (command.includes("$ cd ..")) {
     index--;
@@ -87,3 +59,16 @@ data.map((command) => {
 
 console.log(directories);
 console.log(files);
+
+// Adding size from FILES to dirs
+
+const dirsWithFiles = directories.map((dir) => {
+  let size = 0;
+  const dirSize = files
+    .filter((file) => file.parent === dir.name)
+    .map((file) => (size += file.size));
+  return { ...dir, size: size };
+});
+console.log(dirsWithFiles);
+
+// Adding size from children DIRS to dirs
