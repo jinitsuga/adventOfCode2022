@@ -26,7 +26,7 @@ import { input, exampleData } from "./day7Input.js";
 
 // Don't care about file names, just make anonymous objects { }
 
-const data = exampleData.split("\n");
+const data = input.split("\n");
 
 let currentDir = [];
 
@@ -41,7 +41,7 @@ data.map((line) => {
       if (split[2] == "..") {
         currentDir.pop();
       } else if (split[2] == "/") {
-        return;
+        currentDir.push(split[2]);
       } else {
         currentDir.push(split[2]);
       }
@@ -49,21 +49,62 @@ data.map((line) => {
   } else {
     const [size, name] = line.split(" ");
     if (size == "dir") {
-      dirs.push({ size: 0, path: currentDir.join("/") + `/${name}` });
+      dirs.push({
+        size: 0,
+        name: name,
+        path: (currentDir.join() + `,${name}`).split(","),
+      });
     } else {
-      files.push({ size: size, name: name, path: currentDir.join("/") });
+      files.push({
+        size: size,
+        path: currentDir.join().split(","),
+      });
     }
   }
 });
 
-const sizedFiles = files.filter((file) => Number(file.size) <= 100000);
+let dirSizes = [];
 
-console.log(sizedFiles);
-console.log(dirs);
+dirs.map((dir) => {
+  let dirSize = 0;
+  files.map((file) => {
+    const filePath = file.path;
+    const realFilePath = filePath.slice(0, filePath.length - 1);
+    const realFilePath2 = filePath.slice(0, filePath.length - 2);
+    const realFilePath3 = filePath.slice(0, filePath.length - 3);
+
+    if (file.path.join("/") == dir.path.join("/")) {
+      dirSize += Number(file.size);
+    }
+    if (realFilePath.join("/") == dir.path.join("/")) {
+      dirSize += Number(file.size);
+    }
+    if (realFilePath2.join("/") == dir.path.join("/")) {
+      dirSize += Number(file.size);
+    }
+    if (realFilePath3.join("/") == dir.path.join("/")) {
+      dirSize += Number(file.size);
+    }
+  });
+  dirSizes.push({ dir: dir.name, size: dirSize, path: dir.path });
+});
+
+console.log(files);
+
+const filteredDirs = dirSizes.filter((dir) => dir.size <= 100000);
+
+console.log(filteredDirs);
+
+let sum = 0;
+
+for (let i = 0; i < filteredDirs.length; i++) {
+  sum += filteredDirs[i].size;
+}
+console.log(sum);
 
 // Analyze command
 // Keep track of folder we're in - track cd x, cd .. etc
 // 2 collections? Files and dirs
 // File objects have its name, its size, and the dir they belong to
-// Dir objects have name, dir they're in, references to files they contain, and sub-dirs
+// Dir objects have name, dir they're in,
 // Check all files and their sizes, adding to the dir size they belong to
